@@ -44,3 +44,38 @@ def f(x):
  return x+1
  
 
+
+
+************************************************************************************************************************************
+2018.3.13
+selenium
+1、关于get_text、geb_attribute
+    一个是获取标签值，一个是获取属性值
+2、webdriver如何自动下载pdf文档（pdf跟zip文件还略有不同）
+   参考：https://www.cnblogs.com/fengfengshaonian/p/6839609.html
+         http://blog.csdn.net/huilan_same/article/details/52789954
+   示例代码：
+fp = webdriver.FirefoxProfile()
+fp.set_preference("browser.download.folderList", 2)
+fp.set_preference("browser.download.manager.showWhenStarting", False)
+fp.set_preference("browser.download.dir", "d:\\downloadTest")
+fp.set_preference("plugin.disable_full_page_plugin_for_types", "application/pdf")
+fp.set_preference("pdfjs.disabled", True)
+fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+driver = webdriver.Firefox(firefox_profile=fp)
+driver.implicitly_wait(10)
+driver.maximize_window()
+driver.get("http://www.sse.com.cn/assortment/stock/list/info/announcement/index.shtml?productId=600066")
+url= driver.find_element_by_link_text("600066:宇通客车2018年2月份产销数据快报").get_attribute('href')
+print (url)
+driver.get(url)
+driver.find_element_by_id("download").click()
+driver.quit()
+#driver.quit()
+3、关于webdriver浏览器驱动的安装
+   http://blog.csdn.net/azsx02/article/details/68947429  （火狐浏览器的驱动可以下载）
+4、AutoIt实现自动上传 
+   https://www.cnblogs.com/fnng/p/4188162.html
+
+
+
