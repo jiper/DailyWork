@@ -86,8 +86,7 @@ driver.quit()
 
 ************************************************************************************************************************************
 2018.3.14
-1、mysql+Mysql+Navicat for MySQL环境安装
-   http://blog.csdn.net/lxfhahaha/article/details/56847353
+一、Selenium实现自动下载和上传文件
 2、AutoIt实现自动上传与参数化
    https://www.cnblogs.com/fnng/p/4188162.html
    https://www.cnblogs.com/caoj/p/7815835.html
@@ -171,4 +170,11 @@ driver.find_element_by_xpath("//div[@class = 'btns']/a").click()
 time.sleep(15)
 driver.find_element_by_xpath("//div[@class = 'btns']/a[3]").click()
 driver.quit()
+
+二、Python+Mysql
+1、mysql+Mysql+Navicat for MySQL环境安装
+   http://blog.csdn.net/lxfhahaha/article/details/56847353
+2、基本操作间《Mysql基本操作》
+2、Python操作数据库
+   https://www.cnblogs.com/fnng/p/6863616.html
 
