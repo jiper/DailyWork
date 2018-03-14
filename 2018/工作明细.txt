@@ -52,9 +52,13 @@ selenium
 1、关于get_text、geb_attribute
     一个是获取标签值，一个是获取属性值
 2、webdriver如何自动下载pdf文档（pdf跟zip文件还略有不同）
-   参考：https://www.cnblogs.com/fengfengshaonian/p/6839609.html
-         http://blog.csdn.net/huilan_same/article/details/52789954
+   参考：http://blog.csdn.net/huilan_same/article/details/52789954
+	https://www.cnblogs.com/fengfengshaonian/p/6839609.html
+   
    示例代码：
+from selenium import webdriver
+import time
+import os
 fp = webdriver.FirefoxProfile()
 fp.set_preference("browser.download.folderList", 2)
 fp.set_preference("browser.download.manager.showWhenStarting", False)
@@ -78,4 +82,93 @@ driver.quit()
    https://www.cnblogs.com/fnng/p/4188162.html
 
 
+
+
+************************************************************************************************************************************
+2018.3.14
+1、mysql+Mysql+Navicat for MySQL环境安装
+   http://blog.csdn.net/lxfhahaha/article/details/56847353
+2、AutoIt实现自动上传与参数化
+   https://www.cnblogs.com/fnng/p/4188162.html
+   https://www.cnblogs.com/caoj/p/7815835.html
+3、关于python中的文件路径
+   http://blog.csdn.net/u011242657/article/details/64437612	
+4、PDF转EXCELE工具
+   http://app.xunjiepdf.com/pdf2excel
+5、pdf转换代码
+#coding=utf-8
+from selenium import webdriver
+import time
+import os
+
+profile = webdriver.FirefoxProfile()
+profile.set_preference('browser.download.dir', 'd:\\downloadTest\\')
+profile.set_preference('browser.download.folderList', 2)
+profile.set_preference('browser.download.manager.showWhenStarting', False)
+profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.ms-excel')
+
+driver = webdriver.Firefox(firefox_profile=profile)
+
+
+url = "http://app.xunjiepdf.com/pdf2excel"
+driver.get(url)
+time.sleep(10)
+
+driver.find_element_by_xpath("//div[@class = 'settings']/div[2]/a[2]").click()
+
+driver.find_element_by_id("filePicker").click()
+os.system(r"C:\Users\suxiaolin\Desktop\upfile.exe")
+time.sleep(10)
+
+
+driver.find_element_by_xpath("//div[@class = 'btns']/a").click()
+time.sleep(25)
+driver.find_element_by_xpath("//div[@class = 'btns']/a[3]").click()
+driver.quit()
+
+6、全部代码
+#coding=utf-8
+from selenium import webdriver
+import time
+import os
+fp = webdriver.FirefoxProfile()
+fp.set_preference("browser.download.folderList", 2)
+fp.set_preference("browser.download.manager.showWhenStarting", False)
+fp.set_preference("browser.download.dir", "d:\\downloadTest")
+fp.set_preference("plugin.disable_full_page_plugin_for_types", "application/pdf")
+fp.set_preference("pdfjs.disabled", True)
+fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+driver = webdriver.Firefox(firefox_profile=fp)
+driver.implicitly_wait(10)
+driver.maximize_window()
+driver.get("http://www.sse.com.cn/assortment/stock/list/info/announcement/index.shtml?productId=600066")
+url= driver.find_element_by_link_text("600066:宇通客车2018年2月份产销数据快报").get_attribute('href')
+print (url)
+driver.get(url)
+driver.find_element_by_id("download").click()
+driver.quit()
+profile = webdriver.FirefoxProfile()
+profile.set_preference('browser.download.dir', 'd:\\downloadTest\\')
+profile.set_preference('browser.download.folderList', 2)
+profile.set_preference('browser.download.manager.showWhenStarting', False)
+profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.ms-excel')
+
+driver = webdriver.Firefox(firefox_profile=profile)
+
+
+url = "http://app.xunjiepdf.com/pdf2excel"
+driver.get(url)
+time.sleep(4)
+
+driver.find_element_by_xpath("//div[@class = 'settings']/div[2]/a[2]").click()
+
+driver.find_element_by_id("filePicker").click()
+os.system(r"C:\Users\suxiaolin\Desktop\upfile.exe")
+time.sleep(4)
+
+
+driver.find_element_by_xpath("//div[@class = 'btns']/a").click()
+time.sleep(15)
+driver.find_element_by_xpath("//div[@class = 'btns']/a[3]").click()
+driver.quit()
 
