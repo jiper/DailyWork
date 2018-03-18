@@ -1,0 +1,10 @@
+主题一：Git环境安装
+安装包：Git extension+git+TortoiseGit(安装Git extension时可以顺带安装git，但是可能不是最新版的git，所以git最好是重新下载安装)
+重新环境是注意卸载所有软件，并删除注册表（extension和TortoiseGit）
+
+
+主题二：AutoIt参数上传
+参考文档：https://www.cnblogs.com/yajing-zh/p/5076881.html
+遇到问题：能在cmd中执行的语句："E:\JianLpeng\workspace\AutoIt\UpfileWithPara.exe" "firefox" "E:\JianLpeng\workspace\AutoIt\file.txt" ，通过os.system执行不了
+原因：是空格问题，解决办法 os.system("E:\JianLpeng\workspace\AutoIt\UpfileWithPara.exe"" ""firefox"" ""E:\JianLpeng\workspace\AutoIt\file.txt" )
+
