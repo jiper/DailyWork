@@ -83,21 +83,26 @@ def InsertPSTable(users,passwords,databases):
     db.close()
     
     
-def QueryPSTable(users,passwords,databases):
-    sql = '''SELECT * FROM `ProductionSale` 
-             WHERE `stock_code`=600360 AND `stock_name`='宇通客车' AND `year`=2018 AND `month`=9'''
+def QueryPSTable(users,passwords,databases,stock_codes,years,months):
+    
+    sql = "SELECT * FROM `ProductionSale` WHERE `stock_code`="+stock_codes+" AND `year`="+years+" AND `month`="+months
+  
+    #sql = '''SELECT * FROM `ProductionSale` 
+    #         WHERE `stock_code`=600360 AND `stock_name`='宇通客车' AND `year`=2018 AND `month`=9'''
              
     db = pymysql.connect(user=users,password=passwords,database=databases,charset="utf8")
     cursor = db.cursor()
     cursor.execute(sql)
     rs=cursor.fetchall()
+    flag = -1
     if rs:
-        print ("exist")
+        flag = 0
     else:
-        print ("not exist")
-    print (rs)
+        flag = -1
+    #print (rs)
     cursor.close()
     db.close()
+    return flag
     
     
 
@@ -139,7 +144,7 @@ def ExcelToSql(users,passwords,databases):
     
    
     
-ExcelToSql(users="root",passwords="jip6669635",databases="db_test1")
+#ExcelToSql(users="root",passwords="jip6669635",databases="db_test1")
 
 
 
@@ -156,12 +161,46 @@ ProductionSaleUpdate (StockList,year=datetime.datetime.now().year,month= datetim
 
 '''
 
+user = "root"
+password = "6669635"
+database = "db_test1"
+stock_code = "600360"
+year = "2018"
+month ="4"
+#TrueOrFalse = QueryPSTable(users=user,passwords=password,databases=database,stock_codes=stock_code,years=year,months=month)
+#print (TrueOrFalse)
 
 
-
-
-
-
+DownloadAdr = "d:\\downloadTest"
+def DownloadPDF(StockName,stock_code):
+    fp = webdriver.FirefoxProfile()
+    fp.set_preference("browser.download.folderList", 2)
+    fp.set_preference("browser.download.manager.showWhenStarting", False)
+    fp.set_preference("browser.download.dir", DownloadAdr)
+    fp.set_preference("plugin.disable_full_page_plugin_for_types", "application/pdf")
+    fp.set_preference("pdfjs.disabled", True)
+    fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+    driver = webdriver.Firefox(firefox_profile=fp)
+    driver.implicitly_wait(10)
+    driver.maximize_window()
+    url = "http://www.sse.com.cn/home/search/?webswd="+StockName+"产销快报"
+    driver.get(url)
+    
+    driver.implicitly_wait(50)
+    
+    content = driver.find_element_by_xpath("//div[@id='sse_query_list']/dl/dd/a/span").text
+    date = content.split('-')
+    year = date[0]
+    month = date[1]
+    
+    #假设起始日期为2017.1
+    DateBegin = (year-2000)*12+month
+    DateEnd = (2017-2000)*12+1
+    for DateExact in range(DateBegin,DateEnd-1,-1):
+        YearExact = (int)(DateExact/12) +2000
+        MonthExact= DateExact%12
+        TrueOrFalse = QueryPSTable(users=user,passwords=password,databases=database,stock_codes=stock_code,years=YearExact,months=MonthExact)
+        if (TrueOrFalse == -1)
 
 
 
