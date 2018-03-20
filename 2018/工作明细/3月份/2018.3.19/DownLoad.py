@@ -24,21 +24,20 @@ driver.implicitly_wait(50)
 
 driver.find_element_by_id('Next').click()
 
-#href=driver.find_element_by_xpath("//a[@title='宇通客车2018年2月份产销数据快报']").get_attribute('href')
-#content = driver.find_element_by_xpath("//div[@id='sse_query_list']/dl/dd/a/span").text
-#
-#print (content)
-#list=href.split('/')
-#print (list)
-#PDF_name=list[-1]
-#print (PDF_name)
-##driver.quit()
-#driver.get(href)
-#
-##driver.find_element_by_xpath("//a[@title='宇通客车2018年2月份产销数据快报']/h2").click()
-#driver.implicitly_wait(10)
-#driver.find_element_by_id("download").click()
+href=driver.find_element_by_xpath("//a[@title='宇通客车2018年2月份产销数据快报']").get_attribute('href')
+content = driver.find_element_by_xpath("//div[@id='sse_query_list']/dl/dd/a/span").text
+print (content)
+list=href.split('/')
+print (list)
+PDF_name=list[-1]
+print (PDF_name)
 #driver.quit()
+driver.get(href)
+
+#driver.find_element_by_xpath("//a[@title='宇通客车2018年2月份产销数据快报']/h2").click()
+driver.implicitly_wait(10)
+driver.find_element_by_id("download").click()
+driver.quit()
 
 
 
