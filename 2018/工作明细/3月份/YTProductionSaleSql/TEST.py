@@ -24,16 +24,24 @@ fp = search(DownloadAdr, word,"xls")
 print (type(fp))
 
 #xlrd.Book.encoding = "gbk"
-fp1 = "d:\\downloadTest\\"+r"600066_20180306_2_5.xls"
+fp1 = "d:\\downloadTest\\"+r"600066_20180306_2_3.xlsx"
 print (fp1)
 
-f = open(fp1, 'rb')
-lines = f.readlines()
-for line in lines:
-    line = line.decode('gb2312').encode('utf8') 
-    print (line)
+#f = open(fp1, 'rb')
+#lines = f.readlines()
+#for line in lines:
+#    line = line.decode('gb2312').encode('utf8') 
+#    print (line)
 
 #data = xlrd.open_workbook(r'd:\downloadTest\test.xlsx')
 
 #xlrd.open_workbook(r'd:\downloadTest\600066_20180306_2_6.xls')
-#data = xlrd.open_workbook(r'd:\downloadTest\600066_20180306_2_5.xls',formatting_info=True,encoding_override="utf-8")
+data = xlrd.open_workbook(fp1)
+    
+    
+#import pandas as pd
+#
+#df=pd.read_excel(fp1,sheetname=0)
+#print (df.head())
+
+

@@ -178,7 +178,7 @@ ProductionSaleUpdate (StockList,year=datetime.datetime.now().year,month= datetim
 '''
 
 user = "root"
-password = "6669635"
+password = "jip6669635"
 database = "db_test1"
 stock_code = "600066"
 #year = "2018"
@@ -221,9 +221,9 @@ def DownloadPDF(driver,StockName,stock_code,year,month):
 
 #PDF转excel
 #ExeAdr = r"E:\JianLpeng\workspace\AutoIt\UpfileWithPara.exe"
-ExeAdr=r"D:\JianLPeng\DailyWork\2018\工作明细\3月份\YTProductionSaleSql\UpfileWithPara.exe"
+ExeAdr=r"E:\JianLPeng\DailyWork\2018\工作明细\3月份\YTProductionSaleSql\UpfileWithPara.exe"
 def PdfToExcel(fileName,driver):
-    driver.find_element_by_xpath("//div[@class = 'settings']/div[2]/a[2]").click()
+    #driver.find_element_by_xpath("//div[@class = 'settings']/div[2]/a[2]").click()
     driver.find_element_by_id("filePicker").click()
     fileAdr = DownloadAdr+'\\'+fileName
     os.system(ExeAdr+" "+"firefox"+" "+fileAdr)
@@ -269,7 +269,7 @@ if 0:
     
 
 
-DownloadAdr = "d:\\downloadTest1"
+DownloadAdr = "d:\\downloadTest"
 def ProSaleUpdate(StockName,stock_code):
     fp = webdriver.FirefoxProfile()
     fp.set_preference("browser.download.folderList", 2)
@@ -287,7 +287,8 @@ def ProSaleUpdate(StockName,stock_code):
     profile.set_preference('browser.download.dir', DownloadAdr)
     profile.set_preference('browser.download.folderList', 2)
     profile.set_preference('browser.download.manager.showWhenStarting', False)
-    profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.ms-excel')
+    #profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.ms-excel')
+    profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ')
     driverEx = webdriver.Firefox(firefox_profile=profile)
     urlEx = "http://app.xunjiepdf.com/pdf2excel"
     driverEx.get(urlEx)
@@ -323,16 +324,16 @@ def ProSaleUpdate(StockName,stock_code):
             PDF_Name = DownloadPDF(driver =driver ,StockName=StockName,stock_code=stock_code,year=str(YearExact),month=str(MonthExact))
             PdfToExcel(fileName=PDF_Name,driver = driverEx)
             PDF_list = PDF_Name.split('.')
-            ExcelAdr = search(DownloadAdr, PDF_list[0],"xls")
+            ExcelAdr = search(DownloadAdr, PDF_list[0],"xlsx")
             
             
            #PDF_list[0]+".xls"
             
             #ExcelAdr = DownloadAdr + "\\"+ExcelName
             ExcelToSql(users=user,passwords=password,databases=database,address=ExcelAdr,StockName=StockName,StockCode=stock_code,Year=str(YearExact),Month=str(MonthExact))         
-            print (YearExact+"年"+MonthExact+"月入库成功")
+            print (str(YearExact)+"年"+str(MonthExact)+"月入库成功")
         else:
-            print (YearExact+"年"+MonthExact+"数据库中已有记录")
+            print (str(YearExact)+"年"+str(MonthExact)+"数据库中已有记录")
     driver.quit()
     driverEx.quit()
             
