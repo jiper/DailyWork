@@ -14,6 +14,18 @@ import datetime
 import os
 import time
 
+
+
+
+def search(path, word1,word2):
+    for filename in os.listdir(path):
+        fp = os.path.join(path, filename)
+        if os.path.isfile(fp) and word1 in filename:
+            if os.path.isfile(fp) and word2 in filename:
+                print (fp)
+    return (fp)
+
+
 def CreatePSTable(users,passwords,databases):
     cmd = '''CREATE TABLE IF NOT EXISTS `ProductionSale` (
 `stock_code` VARCHAR(100),
@@ -125,13 +137,12 @@ AllField ='''(`stock_code`,`stock_name`,`year`,`month`,`production`,`SPLY_produc
 `small_sale`,`SPLY_sale_small`,`month_changeS_small`,`cumulativeS_small`,`SPLY_cumulativeS_small`,`cumulativeS_changeS_small`)'''
 
 
-def ExcelToSql(users,passwords,databases):
-    address = r"E:\JianLpeng\Project\Anack\scawling\600066_20180306_2.xlsx"
+def ExcelToSql(users,passwords,databases,address,StockName,StockCode,Year,Month):
     data = xlrd.open_workbook(address)
     table =data.sheets()[0]
     nrows =table.nrows
     print (table.row_values(0)[:13])
-    DataInsert = ['600360','宇通客车','2018','3']
+    DataInsert = [StockCode,StockName,Year,Month]
     for i in range(nrows):
         if (table.row_values(i)[0]=='生产量'):
             break;
@@ -167,11 +178,11 @@ ProductionSaleUpdate (StockList,year=datetime.datetime.now().year,month= datetim
 '''
 
 user = "root"
-password = "jip6669635"
+password = "6669635"
 database = "db_test1"
-stock_code = "600360"
-year = "2018"
-month ="4"
+stock_code = "600066"
+#year = "2018"
+#month ="4"
 #TrueOrFalse = QueryPSTable(users=user,passwords=password,databases=database,stock_codes=stock_code,years=year,months=month)
 #print (TrueOrFalse)
 
@@ -209,38 +220,56 @@ def DownloadPDF(driver,StockName,stock_code,year,month):
     return PDF_name
 
 #PDF转excel
-ExeAdr = r"E:\JianLpeng\workspace\AutoIt\UpfileWithPara.exe"
+#ExeAdr = r"E:\JianLpeng\workspace\AutoIt\UpfileWithPara.exe"
+ExeAdr=r"D:\JianLPeng\DailyWork\2018\工作明细\3月份\YTProductionSaleSql\UpfileWithPara.exe"
 def PdfToExcel(fileName,driver):
     driver.find_element_by_xpath("//div[@class = 'settings']/div[2]/a[2]").click()
     driver.find_element_by_id("filePicker").click()
     fileAdr = DownloadAdr+'\\'+fileName
     os.system(ExeAdr+" "+"firefox"+" "+fileAdr)
     time.sleep(4) 
-    driverEx.find_element_by_xpath("//div[@class = 'btns']/a").click()
+    driver.find_element_by_xpath("//div[@class = 'btns']/a").click()
     #以下语句还需要优化
     time.sleep(15)
     driver.find_element_by_xpath("//div[@class = 'btns']/a[3]").click()
     driver.refresh()
 
-##import os
-##ExeAdr = r"E:\JianLpeng\workspace\AutoIt\UpfileWithPara.exe"
-#fileName = "600066_20180306_2.pdf"
-##DownloadAdr = "d:\\downloadTest"
-##fileAdr = DownloadAdr+'\\'+fileName
-##os.system(ExeAdr+" "+"firefox"+" "+fileAdr)
-#profile = webdriver.FirefoxProfile()
-#profile.set_preference('browser.download.dir', 'd:\\downloadTest\\')
-#profile.set_preference('browser.download.folderList', 2)
-#profile.set_preference('browser.download.manager.showWhenStarting', False)
-#profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.ms-excel')
-#driverEx = webdriver.Firefox(firefox_profile=profile)
-#urlEx = "http://app.xunjiepdf.com/pdf2excel"
-#driverEx.get(urlEx)
-#PdfToExcel(fileName=fileName,driver=driverEx)
+
+#pdf转excel测试
+#import os
+if 0: 
+    StockName = "宇通客车"
+    stock_code = "600066"
+    fp = webdriver.FirefoxProfile()
+    fp.set_preference("browser.download.folderList", 2)
+    fp.set_preference("browser.download.manager.showWhenStarting", False)
+    fp.set_preference("browser.download.dir", DownloadAdr)
+    fp.set_preference("plugin.disable_full_page_plugin_for_types", "application/pdf")
+    fp.set_preference("pdfjs.disabled", True)
+    fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
+    driver = webdriver.Firefox(firefox_profile=fp)
+    driver.implicitly_wait(10)
+    driver.maximize_window()
+    url = "http://www.sse.com.cn/home/search/?webswd="+StockName+"产销快报"
+    driver.get(url)
+    
+    
+    
+    
+    fileName = "600066_20180306_2.pdf"
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference('browser.download.dir', 'd:\\downloadTest\\')
+    profile.set_preference('browser.download.folderList', 2)
+    profile.set_preference('browser.download.manager.showWhenStarting', False)
+    profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.ms-excel')
+    driverEx = webdriver.Firefox(firefox_profile=profile)
+    urlEx = "http://app.xunjiepdf.com/pdf2excel"
+    driverEx.get(urlEx)
+    PdfToExcel(fileName=fileName,driver=driverEx)
     
 
 
-DownloadAdr = "d:\\downloadTest"
+DownloadAdr = "d:\\downloadTest1"
 def ProSaleUpdate(StockName,stock_code):
     fp = webdriver.FirefoxProfile()
     fp.set_preference("browser.download.folderList", 2)
@@ -254,8 +283,13 @@ def ProSaleUpdate(StockName,stock_code):
     driver.maximize_window()
     
     #pdf转EXCEL
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference('browser.download.dir', DownloadAdr)
+    profile.set_preference('browser.download.folderList', 2)
+    profile.set_preference('browser.download.manager.showWhenStarting', False)
+    profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/vnd.ms-excel')
+    driverEx = webdriver.Firefox(firefox_profile=profile)
     urlEx = "http://app.xunjiepdf.com/pdf2excel"
-    driverEx=webdriver.Firefox(firefox_profile=fp)
     driverEx.get(urlEx)
     #driverEx.implicitly_wait(4)
    
@@ -265,23 +299,45 @@ def ProSaleUpdate(StockName,stock_code):
     driver.implicitly_wait(50)
     
     (year,month)=DateLastUpdate(driver)
-    
+    if (month=="1"):
+        YearInt = int(year)-1
+        MonthInt= 12
+    else:
+        YearInt = int(year)
+        MonthInt= int(month) -1       
+
     #假设起始日期为2017.1
-    DateBegin = (year-2000)*12+month
+#    YearInt = int(year)
+#    MonthInt= int(month)
+    DateBegin = (YearInt-2000)*12+MonthInt
     DateEnd = (2017-2000)*12+1
+    DateFront = DateBegin  #从来控制翻页
     for DateExact in range(DateBegin,DateEnd-1,-1):
+        if ((DateExact-DateFront)>=10):
+            driver.find_element_by_id('Next').click()
+            DateFront = DateExact
         YearExact = (int)(DateExact/12) +2000
         MonthExact= DateExact%12
-        TrueOrFalse = QueryPSTable(users=user,passwords=password,databases=database,stock_codes=stock_code,years=YearExact,months=MonthExact)
-        #if (TrueOrFalse == -1):
-            判断是否翻页
-            转换
-            入库
-        else：
-            break
+        TrueOrFalse = QueryPSTable(users=user,passwords=password,databases=database,stock_codes=stock_code,years=str(YearExact),months=str(MonthExact))
+        if (TrueOrFalse == -1):
+            PDF_Name = DownloadPDF(driver =driver ,StockName=StockName,stock_code=stock_code,year=str(YearExact),month=str(MonthExact))
+            PdfToExcel(fileName=PDF_Name,driver = driverEx)
+            PDF_list = PDF_Name.split('.')
+            ExcelAdr = search(DownloadAdr, PDF_list[0],"xls")
             
             
-        
+           #PDF_list[0]+".xls"
+            
+            #ExcelAdr = DownloadAdr + "\\"+ExcelName
+            ExcelToSql(users=user,passwords=password,databases=database,address=ExcelAdr,StockName=StockName,StockCode=stock_code,Year=str(YearExact),Month=str(MonthExact))         
+            print (YearExact+"年"+MonthExact+"月入库成功")
+        else:
+            print (YearExact+"年"+MonthExact+"数据库中已有记录")
+    driver.quit()
+    driverEx.quit()
+            
+            
+ProSaleUpdate("宇通客车","600066")        
 #StockName = "宇通客车"
 #stock_code = "600066"
 #fp = webdriver.FirefoxProfile()
