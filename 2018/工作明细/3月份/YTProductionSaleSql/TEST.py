@@ -23,9 +23,17 @@ word="600066_20180306_2"
 fp = search(DownloadAdr, word,"xls")
 print (type(fp))
 
-
-fp1 = "d:\\downloadTest\\"+r"600066_20180306_2_42847.xls"
+#xlrd.Book.encoding = "gbk"
+fp1 = "d:\\downloadTest\\"+r"600066_20180306_2_5.xls"
 print (fp1)
 
+f = open(fp1, 'rb')
+lines = f.readlines()
+for line in lines:
+    line = line.decode('gb2312').encode('utf8') 
+    print (line)
+
 #data = xlrd.open_workbook(r'd:\downloadTest\test.xlsx')
-data = xlrd.open_workbook(r'd:\downloadTest\600066_20180306_2_42847.xlsx',encoding_override='utf-8')
+
+#xlrd.open_workbook(r'd:\downloadTest\600066_20180306_2_6.xls')
+#data = xlrd.open_workbook(r'd:\downloadTest\600066_20180306_2_5.xls',formatting_info=True,encoding_override="utf-8")
