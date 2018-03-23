@@ -206,3 +206,14 @@ python数据库操作（增、查、建）+元祖、列表、字符串的相互转化+获取系统日期
 主题三：selenium
 通过driver.find_element_by_xpath("//标签名[@属性名='属性描述']").get_attribute('另一个属性')，这种方式可以通过某个属性（确保唯一）定位元素，并且获得另一个属性值
 
+
+************************************************************************************************************************************
+2018.3.23
+主题一：mysql
+修改mysql某个用户的密码
+用SET PASSWORD命令
+1、打开终端win+r输入cmd回车即可打开；
+2、通过mysql -u用户名 -p指定root用户登录MySQL，输入后回车会提示输入密码。
+3、修改MySQL的root用户密码，格式：mysql> set password for 用户名@localhost = password('新密码'); 例子：mysql> set password for root@localhost = password('shapolang'); 上面例子将用户root的密码更改为shapolang　
+
+
