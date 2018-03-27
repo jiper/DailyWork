@@ -94,3 +94,18 @@ Connect(*args, **kwargs)  #收集位置参数和关键字参数
 专题四：python selenium等待
 参考资料：https://blog.csdn.net/huilan_same/article/details/52544521
 
+
+************************************************************************************************************************************
+2018.3.27 
+主题一：python with关键字
+参考资料：https://blog.csdn.net/bitcarmanlee/article/details/52745676
+
+主题二：python在指定行前插入一行
+参考资料：https://blog.csdn.net/wjciayf/article/details/49638735
+
+主题三：python文件夹替换
+参考资料：https://blog.csdn.net/eava_wu/article/details/48734537
+
+主题四：python文件和目录操作方法大全
+参考资料：https://blog.csdn.net/u010159842/article/details/53084067
+
