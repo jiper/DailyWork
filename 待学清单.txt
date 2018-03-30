@@ -1,1 +1,3 @@
 1¡¢pythonÎ¢ÐÅ
+2¡¢python package¡¢module¡¢¡£¡£
+3¡¢notepadÊ¹ÓÃ
