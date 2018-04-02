@@ -1,0 +1,26 @@
+************************************************************************************************************************************
+之前整理资料：
+主题一：爬虫步骤：
+1、如何生成url地址：
+   http://money.finance.sina.com.cn/corp/go.php/vFD_BalanceSheet/stockid/600660/ctrl/2017/displaytype/4.phtml
+   只需要替换股票代码（600660）和年份（2017）两个字段，就可以生成其他股票或年份的数据
+2、利用requeset爬取页面源码
+   用法：requests.get(url,headers = headers)
+   其中，url为访问地址；headers用于设置代理，页面支持的代理可以去网站查找
+3、如何筛选出有用的数据
+ 1）推荐工具：BeautifulSoup（很方便地提取出HTML或XML标签中的内容）
+    用法：soup.select('table#ProfitStatementNewTable0')，其中table#ProfitStatementNewTable0，为源码中某个表的ID
+    同时，BeautifulSoup支持Xpath定位，有兴趣可以自己百度
+    网址：https://cuiqingcai.com/1319.html
+ 2）正则表达式：通用但是要学习其使用方法，入门的门槛较高，不如BeautifulSoup简单易学
+    用法：re.findall('正则表达式'，页面源码)
+    学习网址：https://www.cnblogs.com/chuxiuhong/p/5885073.html
+4、利用pandas输出并存储数据(csv文档)
+    用法：pd.DataFrame(data, index=dates, columns= features)
+    data：表的内容（二维矩阵）
+    index:索引值，比如说爬虫的某个股票2017年的数据，索引值为日期
+    columns：表头，列的名称
+
+
+2018.4.2
+1、如何查看robot.txt：只需要在地址后面加/robot.txt即可
