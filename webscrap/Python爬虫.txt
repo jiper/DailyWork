@@ -65,6 +65,11 @@ python正则表达式：http://www.runoob.com/python/python-reg-expressions.html
 六：关于字符串：python路径中最好是用/代替\，字符串最后为\会报错
 
 
+-------------
+整体思路：
+1、获取所有月份下的pdf地址
+
+
 
 
 
