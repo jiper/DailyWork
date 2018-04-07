@@ -24,3 +24,49 @@
 
 2018.4.2
 1、如何查看robot.txt：只需要在地址后面加/robot.txt即可
+
+************************************************************************************************************************************
+2018.4.6
+---------------
+1、Python2中的urllib、urllib2与Python3中的urllib以及第三方模块requests
+   参考资料：https://blog.csdn.net/Goldxwang/article/details/76850401
+   结论：Requests 是用Python语言编写，基于 urllib，采用 Apache2 Licensed 开源协议的 HTTP 库。它比 urllib 更加方便，可以节约我们大量的工作，完全满足 HTTP 测试需求。Requests 的哲学是以 PEP 20 的习语为中心开发的，所以它比 urllib 更加 Pythoner。更重要的一点是它支持 Python3 哦！
+2、request参考资料：https://blog.csdn.net/lihao21/article/details/51857385
+
+
+************************************************************************************************************************************
+2018.4.6
+---------------
+一、解决动态页面爬取问题
+https://blog.csdn.net/qq_30242609/article/details/53788228
+二：python将str保存问txt文档
+def save_to_file(file_name, contents):
+    fh = open(file_name, 'w')
+    fh.write(contents)
+    fh.close()
+二、python与正则表达式
+两个问题：
+1、正则表达式转移字符\
+参考资料：https://www.cnblogs.com/ajianbeyourself/p/5709567.html
+2、如何解决正则表达式的贪婪问题
+参考资料：
+默认是贪婪模式；在量词后面直接加上一个问号？就是非贪婪模式。
+量词：{M,N} :最少M个，最多N个
+*：任意多个
++：一个到多个
+？：0或一个
+三：beatifulSoup基本用法
+参考文档：https://blog.csdn.net/kikaylee/article/details/56841789
+四：pytho与正则表达式
+正则表达式基础教程：http://www.runoob.com/regexp/regexp-operator.html
+python正则表达式：http://www.runoob.com/python/python-reg-expressions.html
+五：批量下载pdf
+参考资料：https://blog.csdn.net/u012705410/article/details/47708031
+六：关于字符串：python路径中最好是用/代替\，字符串最后为\会报错
+
+
+
+
+
+
+
