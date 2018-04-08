@@ -18,7 +18,7 @@ from pdfminer.pdfinterp import PDFTextExtractionNotAllowed
  解析pdf 文本，保存到txt文件中
 '''
 class PDFToTXT:
-    def __init__(self,PDFList,PDFAdd='D:\downloadTest',):
+    def __init__(self,PDFList,PDFAdd=r'D:\downloadTest'):
         self.PDFAdd=PDFAdd
         self.PDFList=PDFList
         self.TxtList=[]
@@ -37,6 +37,10 @@ class PDFToTXT:
         # 提供初始化密码
         # 如果没有密码 就创建一个空的字符串
         doc.initialize()
+        
+        self.TxtList.append(name)
+        name = self.PDFAdd+'/'+name
+    
     
         # 检测文档是否提供txt转换，不提供就忽略
         if not doc.is_extractable:
@@ -58,11 +62,14 @@ class PDFToTXT:
                 # 这里layout是一个LTPage对象 里面存放着 这个page解析出的各种对象 一般包括LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal 等等 想要获取文本就获得对象的text属性，
                 for x in layout:
                     if (isinstance(x, LTTextBoxHorizontal)):
+                        #name=self.PDFAdd+'/'+name
                         with open(name, 'a') as f:
                             results = x.get_text()
-                            print(results)
+                            #print(results)
+                            f.write(results)
                             f.write(results + '\n')
-                            self.TxtList.append(name)
+            fp.close()
+            f.close()
 
     def TransAll(self):
         for each in self.PDFList:
@@ -70,11 +77,11 @@ class PDFToTXT:
             txtName =each.split('.')[0]+'.txt'
             self.parse(pdfAdd,txtName)
                         
-import PdfDown
+#import PdfDown
 if __name__ == '__main__':
 #    path = r'D:\downloadTest\600066_20160202_1.pdf'
 #    parse()
-    i = PdfDown.PdfDownLoad()
+    i = PdfDown.PdfDownLoad(year=2018,month=1)
     i.GetAllPdfFile()
     j = PDFToTXT(PDFList=i.pdfList)
     j.TransAll()
