@@ -75,6 +75,16 @@ python正则表达式：http://www.runoob.com/python/python-reg-expressions.html
 ------------------------------------------
 1、str为不可变类，b=a.replace(',','')
 
+今天完成任务：
+1、利用requests爬取pdf连接
+2、将pdf转化为txt
+3、txt中抽取数据入库
+问题：
+pdfminer对表格不友好，格式并非想象那样
+解决思路：
+1、研究一下是否有规律
+2、换其他的库
+
 
 
 

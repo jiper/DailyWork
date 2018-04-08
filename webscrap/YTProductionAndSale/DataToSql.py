@@ -123,34 +123,47 @@ class ProductionSaleToSql:
         return flag
     
  
-    def TxtToSql(self,txtAdd):    
-        f= open(txtAdd,'r')
-        TargetLine=49
-        endLine=143
-        lnum=1
-        data=[self.stock_code,self.StockName]
-        for line in f:
-            if (lnum==TargetLine and TargetLine<=endLine):
-                TargetLine=TargetLine+2
-                line=line.replace(',','')
-                #line=line.strip(',')
-                line=line[:-2]
-                data.append(line)
-            elif (lnum == 16):
-                data.append(line.split(' ')[0])
-            elif (lnum == 17):
-                data.append(line.split(' ')[0])
-            lnum=lnum+1
-        print (data)
-        DataTuple=tuple(list(data))
-        DataStr = str(tuple(DataTuple))
-        sql = "INSERT INTO `ProductionSale`"+" "+self.AllField+" "+"VALUES"+" "+DataStr
-        db = pymysql.connect(user=self.user,password=self.password,database=self.database,charset="utf8")
-        cursor = db.cursor()
-        cursor.execute(sql)
-        db.commit()
-        cursor.close()
-        db.close()
+    def TxtToSql(self,txtAdd): 
+        try:
+            f= open(txtAdd,'r')
+            beginLine=5
+            endLine=77
+            lnum=1
+            data=[self.stock_code,self.StockName]
+            for line in f:
+                lnum=lnum+1
+                if (lnum>=beginLine and lnum<=endLine):
+                    if (ord(line[0])>ord('0') and ord(line[0])<=ord('9')):
+                        line=line.replace(',','')
+                        data.append(line.split(' ')[0])
+                    
+                
+                
+                
+    #            if (lnum==TargetLine and TargetLine<=endLine):
+    #                TargetLine=TargetLine+2
+    #                line=line.replace(',','')
+    #                #line=line.strip(',')
+    #                line=line[:-2]
+    #                data.append(line)
+    #            elif (lnum == 16):
+    #                data.append(line.split(' ')[0])
+    #            elif (lnum == 17):
+    #                data.append(line.split(' ')[0])
+    #            lnum=lnum+1
+            print (data)
+            DataTuple=tuple(list(data))
+            DataStr = str(tuple(DataTuple))
+            sql = "INSERT INTO `ProductionSale`"+" "+self.AllField+" "+"VALUES"+" "+DataStr
+            db = pymysql.connect(user=self.user,password=self.password,database=self.database,charset="utf8")
+            cursor = db.cursor()
+            cursor.execute(sql)
+            db.commit()
+            cursor.close()
+            db.close()
+        finally:
+            f.close()
+            
                 
     def ProSaleUpdate(self):
         self.CreatePSTable()
@@ -172,7 +185,7 @@ if __name__ == "__main__":
     stock_code = "600066"
     StockName = "宇通客车"
     DownloadAdr = "d:\\downloadTest"
-    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2017,MonthBegin = 6)
+    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2017,MonthBegin = 11)
    # Update.ParametersSet(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,ExeAdr=ExeAdr,YearBegin = 2017,MonthBegin = 6)
     Update.ProSaleUpdate()
     
