@@ -92,6 +92,11 @@ pdfminer对表格不友好，格式并非想象那样
 主题一：pdf转换
 参考资料：https://github.com/coolwanglu/pdf2htmlEX/wiki/Download
 
+之前一直失败的原因是路径问题：
+具体可以参考：https://www.cnblogs.com/zhuchenglin/p/7363214.html
+
+经验：
+在命令行执行命令是，注意路径问题
 
 
 
