@@ -98,5 +98,26 @@ pdfminer对表格不友好，格式并非想象那样
 经验：
 在命令行执行命令是，注意路径问题
 
+************************************************************************************************************************************
+2018.4.10
+------------------------------------------
+主题一：pdf2htmlEX用法 
+1、pdf2html用法详解：https://www.cnblogs.com/paxing/p/5796657.html
+% pdf2htmlEX.exe：E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe
+
+pdf2htmlEX [options] <input.pdf> [<output.html>]  
+2、关于路径的相关命令
+--dest-dir <string>           指定目标目录 (default: ".")  
+--data-dir <string>           指定的数据目录 (default: ".\share\pdf2htmlEX")
+
+举例：
+cmd命令：
+1、将目录切换到pdf的目录
+   D:
+   CD:downloadTest
+2、执行命令 
+  E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe --dest-dir D:\downloadTest\HTML 600066_20180403_24.pdf 3.html
+
+
 
 
