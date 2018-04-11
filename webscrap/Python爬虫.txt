@@ -116,7 +116,9 @@ cmd√¸¡Ó£∫
    D:
    CD downloadTest
 2°¢÷¥––√¸¡Ó 
-  E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe --dest-dir D:\downloadTest\HTML 600066_20180403_24.pdf 3.html
+  E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe --dest-dir D:\downloadTest\HTML 600066_20180403_24.pdf 5.html
+  
+  E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe 600066_20180403_24.pdf 3.html
 
 
 

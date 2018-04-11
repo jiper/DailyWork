@@ -33,17 +33,30 @@ html中抓取数据
 '''
 实现转换
 '''
+import subprocess
+from subprocess import Popen,PIPE
 import os
+##import commands
+#cmd1='d:'
+#cmd2='cd'+' '+'downloadTest'
+#cmd3=r'E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe'+' '+'--dest-dir'+' '+r'D:/downloadTest/HTML'+' '+'600066_20180403_24.pdf'+' '+'4.html'
+##os.system(cmd1)
+##os.system(cmd2)
+##os.system(cmd1 && cmd && cmd3)
+##cmd = r'''d: &;cd downloadTest &;E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe --dest-dir D:\downloadTest\HTML 600066_20180403_24.pdf 4.html &;'''
+#cmd=cmd1+' &;'+cmd2+' &;'+cmd3+' &;'
+#cmd4=r'E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe'
+##print (cmd)
+#fhandle = open(r"C:\Users\suxiaolin\Desktop\123.txt", "w")  
+#pipe = subprocess.Popen(cmd4, shell=True, stdout=subprocess.PIPE).stdout 
+#print (pipe.read())
+#fhandle.close()  
+##cmd=cmd1+' && '+cmd2+' && '+cmd3
+##subprocess.call(cmd, shell=True)
+cmd =r'E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe 600066_20171202_2.pdf 4.html'
+cmd1 =r'E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe'+' '+'600066_20171202_2.pdf'+' '+'4.html'
+cmd3='E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe'
+CMD=['E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe']
+pipe = subprocess.Popen(CMD)
 
-cmd1='d:'
-cmd2='cd'+' '+'downloadTest'
-cmd3='E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe'+' '+'--dest-dir'+' '+'D:/downloadTest/HTML'+' '+'600066_20180403_24.pdf'+' '+'4.html'
-#os.system(cmd1)
-#os.system(cmd2)
-os.system(cmd1 && cmd && cmd3)
-cmd = '''d: &;
-cd downloadTest &;
-E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe --dest-dir D:/downloadTest/HTML 600066_20180403_24.pdf 4.html &;
-'''
-print (cmd)
-os.system(cmd)
+
