@@ -57,6 +57,10 @@ cmd =r'E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe 600066_20171202_2.pdf 4.ht
 cmd1 =r'E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe'+' '+'600066_20171202_2.pdf'+' '+'4.html'
 cmd3='E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe'
 CMD=['E:/JianLPeng/Software/pdfToHtml/pdf2htmlEX.exe']
-pipe = subprocess.Popen(CMD)
+CMD1=['pdf2htmlEX.exe']
 
 
+CMD2=['pdf2htmlEX']
+pipe = subprocess.run(CMD2)
+
+#os.system(CMD2[0])

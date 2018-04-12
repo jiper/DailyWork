@@ -119,6 +119,20 @@ cmd命令：
   E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe --dest-dir D:\downloadTest\HTML 600066_20180403_24.pdf 5.html
   
   E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe 600066_20180403_24.pdf 3.html
+  
+  
+************************************************************************************************************************************
+2018.4.12
+-----------------------------
+主题一：学习subprocess
+1、什么是管道命令
+参考资料：https://blog.csdn.net/u010425776/article/details/52191292
+  管道命令能够将一个命令的执行结果经过筛选，只保留我们需要的信息。 
+如，/etc目录下会有大量的文件，如果使用ls很难找到需要的文件，因此可以使用管道命令将ls的结果进行一次筛选，只保留需要的信息。
+2、关于subprocess中的进程交互
+参考资料：https://blog.csdn.net/Marksinoberg/article/details/53366783
+Python系统交互：https://www.cnblogs.com/yyds/p/7288916.html
+实例：https://blog.csdn.net/wolinghuanyun/article/details/52913140  已经验证可用
 
 
 
