@@ -6,11 +6,12 @@ Created on Sun Apr  8 17:22:21 2018
 """
 import pymysql
 import PdfDown
-import PDF_TXT
+import subprocess
+
 
 
 class ProductionSaleToSql:
-    def __init__(self,user,password,database,stock_code,StockName,YearBegin = 2017,MonthBegin = 6,DownloadAdr="d:\\downloadTest"):
+    def __init__(self,user,password,database,stock_code,StockName,ExeAdr=r'E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe',YearBegin = 2017,MonthBegin = 6,DownloadAdr="d:\\downloadTest"):
         self.user = user                      #用户名 
         self.password = password              #密码
         self.database = database              #数据库
@@ -19,6 +20,7 @@ class ProductionSaleToSql:
         self.DownloadAdr = DownloadAdr        #下载路径
         self.YearBegin = YearBegin            #起始日期
         self.MonthBegin = MonthBegin          #结束日期
+        self.ExeAdr=ExeAdr
         # 所有的字段列表   
         self.AllField ='''(`stock_code`,`stock_name`,`year`,`month`,`production`,`SPLY_production`,`moth_changeP`,`cumulativeP`,`SPLY_cumulativeP`,`cumulativeP_changeP`,`large_production`,`SPLY_production_large`,\
         `month_changeP_large`,`cumulativeP_large`,`SPLY_cumulativeP_large`,`cumulativeP_changeP_large`,`mid_production`,`SPLY_production_mid`,`month_changeP_mid`,`cumulativeP_mid`,\
@@ -123,59 +125,38 @@ class ProductionSaleToSql:
         return flag
     
  
-    def TxtToSql(self,txtAdd): 
-        try:
-            f= open(txtAdd,'r')
-            beginLine=5
-            endLine=77
-            lnum=1
-            data=[self.stock_code,self.StockName]
-            for line in f:
-                lnum=lnum+1
-                if (lnum>=beginLine and lnum<=endLine):
-                    if (ord(line[0])>ord('0') and ord(line[0])<=ord('9')):
-                        line=line.replace(',','')
-                        data.append(line.split(' ')[0])
-                    
-                
-                
-                
-    #            if (lnum==TargetLine and TargetLine<=endLine):
-    #                TargetLine=TargetLine+2
-    #                line=line.replace(',','')
-    #                #line=line.strip(',')
-    #                line=line[:-2]
-    #                data.append(line)
-    #            elif (lnum == 16):
-    #                data.append(line.split(' ')[0])
-    #            elif (lnum == 17):
-    #                data.append(line.split(' ')[0])
-    #            lnum=lnum+1
-            print (data)
-            DataTuple=tuple(list(data))
-            DataStr = str(tuple(DataTuple))
-            sql = "INSERT INTO `ProductionSale`"+" "+self.AllField+" "+"VALUES"+" "+DataStr
-            db = pymysql.connect(user=self.user,password=self.password,database=self.database,charset="utf8")
-            cursor = db.cursor()
-            cursor.execute(sql)
-            db.commit()
-            cursor.close()
-            db.close()
-        finally:
-            f.close()
-            
+    def CMDRun(self,cmd):
+        print('start executing cmd...')
+        s = subprocess.Popen(str(cmd), stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        stderrinfo, stdoutinfo = s.communicate()
+        print('stderrinfo is -------> %s and stdoutinfo is -------> %s' % (stderrinfo, stdoutinfo))
+        print('finish executing cmd....')
+        return s.returncode
+    
+    def PDF2Html(self,PDFList):
+        cmd2 =r' --dest-dir D:\downloadTest\HTML D:/downloadTest/'
+        HtmlList=[]
+        for PDFFile in PDFList:
+            HtmlName= PDFFile.split('.')[0]+'.html'
+            CMD=self.ExeAdr+cmd2+PDFFile+' '+HtmlName
+            self.CMDRun(CMD)
+            HtmlList.append(HtmlName)
+        print (HtmlList)
+        return HtmlList
+        
                 
     def ProSaleUpdate(self):
         self.CreatePSTable()
         downLoad = PdfDown.PdfDownLoad(self.YearBegin,self.MonthBegin)
         downLoad.GetAllPdfFile()
         print (downLoad.pdfList)
-        TxtTrans = PDF_TXT.PDFToTXT(PDFList=downLoad.pdfList)
-        TxtTrans.TransAll()
-        for Txt in TxtTrans.TxtList:
-            txtAdd=self.DownloadAdr+'/'+Txt
-            self.TxtToSql(txtAdd)
-            print (Txt+'入库成功')
+        self.PDF2Html(downLoad.pdfList)
+#        TxtTrans = PDF_TXT.PDFToTXT(PDFList=downLoad.pdfList)
+#        TxtTrans.TransAll()
+#        for Txt in TxtTrans.TxtList:
+#            txtAdd=self.DownloadAdr+'/'+Txt
+#            self.TxtToSql(txtAdd)
+#            print (Txt+'入库成功')
             
      
 if __name__ == "__main__":

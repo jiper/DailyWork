@@ -10,7 +10,7 @@ from requests.exceptions import RequestException
 import re
 import urllib
 import os
-
+import shutil
 def save_to_file(file_name, contents):
     fh = open(file_name, 'w')
     fh.write(contents)
@@ -111,6 +111,8 @@ class PdfDownLoad:
                path_file = os.path.join(self.downloadAdrr,i)  # 取文件路径
                if os.path.isfile(path_file):
                    os.remove(path_file)
+               if os.path.isdir(path_file):
+                   shutil.rmtree(path_file)    
             if os.listdir(self.downloadAdrr):   #如果文件夹没有清理干净，抛出异常
                 raise FolderNotCleanException
  
