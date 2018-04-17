@@ -7,6 +7,9 @@ Created on Sun Apr  8 17:22:21 2018
 import pymysql
 import PdfDown
 import subprocess
+from lxml import etree
+import os
+import datetime
 
 
 
@@ -126,31 +129,85 @@ class ProductionSaleToSql:
     
  
     def CMDRun(self,cmd):
-        print('start executing cmd...')
+        #print('start executing cmd...')
         s = subprocess.Popen(str(cmd), stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         stderrinfo, stdoutinfo = s.communicate()
-        print('stderrinfo is -------> %s and stdoutinfo is -------> %s' % (stderrinfo, stdoutinfo))
-        print('finish executing cmd....')
+        #print('stderrinfo is -------> %s and stdoutinfo is -------> %s' % (stderrinfo, stdoutinfo))
+        #print('finish executing cmd....')
         return s.returncode
     
     def PDF2Html(self,PDFList):
+        print ("Transform PDF to Html...")
         cmd2 =r' --dest-dir D:\downloadTest\HTML D:/downloadTest/'
         HtmlList=[]
         for PDFFile in PDFList:
-            HtmlName= PDFFile.split('.')[0]+'.html'
-            CMD=self.ExeAdr+cmd2+PDFFile+' '+HtmlName
-            self.CMDRun(CMD)
-            HtmlList.append(HtmlName)
-        print (HtmlList)
+            DatePDF=PDFFile.split('_')[-2]
+            year=(int)(DatePDF[0:4])
+            month=(int)(DatePDF[4:6])
+            datePDF =datetime.date(year,month,1)
+            date=datePDF+datetime.timedelta(days = -1)
+            #print (date)
+            if (self.QueryPSTable(str(date.year),str(date.month))==-1):
+                HtmlName= PDFFile.split('.')[0]+'.html'
+                CMD=self.ExeAdr+cmd2+PDFFile+' '+HtmlName
+                print ("transform "+PDFFile)
+                self.CMDRun(CMD)
+                HtmlList.append(HtmlName)
+                print ('done')
+            else:
+                print(self.StockName+str(date.year)+'年'+str(date.month)+'月已有记录')       
+        print ("Transform done!")
+        #print (HtmlList)
         return HtmlList
         
-                
+          
+    def HtmlScrap(self,HtmlList):
+        for Htmlname in HtmlList:
+            try:
+                HtmlFolder = os.path.join(self.DownloadAdr,'HTML')
+                HtmlPath=os.path.join(HtmlFolder,Htmlname)
+                #print (HtmlPath)
+                htmlf=open(HtmlPath,'r',encoding="utf-8")
+                html=htmlf.read()
+                selector=etree.HTML(html)
+                #element='//*[@id="pf1"]/div[1]/div[21]/div'
+                lls=[self.stock_code,self.StockName]
+                year =selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[1]/text()')[0]
+                month = selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[2]/text()')[0]
+            
+                lls.append(year)
+                lls.append(month)
+                path1='//*[@id="pf1"]/div[1]/div['
+                path2=']/div/text()'
+                for i in range(0,8):
+                    for j in range(1,7):
+                        num=str(j+i*7+20)
+                        path=path1+num+path2
+                        content=selector.xpath(path)
+                        print(content)
+                        lls.append(content[0])
+                #print (lls)
+                DataTuple=tuple(list(lls))
+                DataStr = str(tuple(DataTuple))
+                sql = "INSERT INTO `ProductionSale`"+" "+self.AllField+" "+"VALUES"+" "+DataStr
+                db = pymysql.connect(user=self.user,password=self.password,database=self.database,charset="utf8")
+                cursor = db.cursor()
+                cursor.execute(sql)
+                db.commit()
+                cursor.close()
+                db.close()
+                print(self.StockName+year+'年'+month+'月入库成功')
+            finally:
+                htmlf.close()
+
+      
     def ProSaleUpdate(self):
         self.CreatePSTable()
         downLoad = PdfDown.PdfDownLoad(self.YearBegin,self.MonthBegin)
         downLoad.GetAllPdfFile()
-        print (downLoad.pdfList)
-        self.PDF2Html(downLoad.pdfList)
+        #print (downLoad.pdfList)
+        HtmlList=self.PDF2Html(downLoad.pdfList)
+        self.HtmlScrap(HtmlList)
 #        TxtTrans = PDF_TXT.PDFToTXT(PDFList=downLoad.pdfList)
 #        TxtTrans.TransAll()
 #        for Txt in TxtTrans.TxtList:
@@ -166,7 +223,7 @@ if __name__ == "__main__":
     stock_code = "600066"
     StockName = "宇通客车"
     DownloadAdr = "d:\\downloadTest"
-    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2017,MonthBegin = 11)
+    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2017,MonthBegin = 4)
    # Update.ParametersSet(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,ExeAdr=ExeAdr,YearBegin = 2017,MonthBegin = 6)
     Update.ProSaleUpdate()
     

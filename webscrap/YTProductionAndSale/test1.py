@@ -7,6 +7,7 @@ Created on Mon Apr 16 13:26:10 2018
 
 import os
 import shutil
+import datetime
 
 path=r"D:\downloadTest"
 
@@ -15,5 +16,13 @@ path=r"D:\downloadTest"
 #    shutil.rmtree(path)
 
 
-li=os.listdir(path)
-print (li)
+#li=os.listdir(path)
+#print (li)
+
+
+#print (os.path.join(path,'2.txt'))
+
+a=datetime.date(2017,12,1)
+print (a)
+a1=a+ datetime.timedelta(days = -1)
+print (a1)
