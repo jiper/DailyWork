@@ -166,14 +166,34 @@ class ProductionSaleToSql:
             try:
                 HtmlFolder = os.path.join(self.DownloadAdr,'HTML')
                 HtmlPath=os.path.join(HtmlFolder,Htmlname)
+                print (Htmlname)
+                YMD=Htmlname.split('_')[-2]
+                month=YMD[4:6]
+                if (month[0]=='0'):
+                    month=month[1:]
+                #print (year)
                 #print (HtmlPath)
+                year=YMD[0:4]
                 htmlf=open(HtmlPath,'r',encoding="utf-8")
                 html=htmlf.read()
                 selector=etree.HTML(html)
                 #element='//*[@id="pf1"]/div[1]/div[21]/div'
                 lls=[self.stock_code,self.StockName]
-                year =selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[1]/text()')[0]
-                month = selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[2]/text()')[0]
+#                year =selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[1]/text()')[0]
+#                month = selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[2]/text()')[0]
+                
+#                data=selector.xpath('//*[@id="pf1"]/div[1]/div[3]/text()')[0]
+#                print (data)
+                
+                if ((selector.xpath('//*[@id="pf1"]/div[1]/div[3]/text()')[0])=='证券代码：'):
+                    offset=20
+#                    year =selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[1]/text()')[0]
+#                    month = selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[2]/text()')[0]
+                else:
+                    offset=18
+#                    year =selector.xpath('//*[@id="pf1"]/div[1]/div[12]/div[1]/text()')[0]
+#                    month = selector.xpath('//*[@id="pf1"]/div[1]/div[12]/div[2]/text()')[0]
+#                    
             
                 lls.append(year)
                 lls.append(month)
@@ -181,10 +201,10 @@ class ProductionSaleToSql:
                 path2=']/div/text()'
                 for i in range(0,8):
                     for j in range(1,7):
-                        num=str(j+i*7+20)
+                        num=str(j+i*7+offset)
                         path=path1+num+path2
                         content=selector.xpath(path)
-                        print(content)
+                        #print(content)
                         lls.append(content[0])
                 #print (lls)
                 DataTuple=tuple(list(lls))
@@ -198,6 +218,7 @@ class ProductionSaleToSql:
                 db.close()
                 print(self.StockName+year+'年'+month+'月入库成功')
             finally:
+                #print ('1')
                 htmlf.close()
 
       
@@ -223,7 +244,7 @@ if __name__ == "__main__":
     stock_code = "600066"
     StockName = "宇通客车"
     DownloadAdr = "d:\\downloadTest"
-    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2017,MonthBegin = 4)
+    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2016,MonthBegin = 3)
    # Update.ParametersSet(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,ExeAdr=ExeAdr,YearBegin = 2017,MonthBegin = 6)
     Update.ProSaleUpdate()
     
