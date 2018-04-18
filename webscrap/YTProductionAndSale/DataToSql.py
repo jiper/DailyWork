@@ -163,42 +163,46 @@ class ProductionSaleToSql:
           
     def HtmlScrap(self,HtmlList):
         for Htmlname in HtmlList:
-            try:
-                HtmlFolder = os.path.join(self.DownloadAdr,'HTML')
-                HtmlPath=os.path.join(HtmlFolder,Htmlname)
-                print (Htmlname)
-                YMD=Htmlname.split('_')[-2]
-                month=YMD[4:6]
-                if (month[0]=='0'):
-                    month=month[1:]
-                #print (year)
-                #print (HtmlPath)
-                year=YMD[0:4]
-                htmlf=open(HtmlPath,'r',encoding="utf-8")
-                html=htmlf.read()
-                selector=etree.HTML(html)
-                #element='//*[@id="pf1"]/div[1]/div[21]/div'
-                lls=[self.stock_code,self.StockName]
-#                year =selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[1]/text()')[0]
-#                month = selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[2]/text()')[0]
-                
-#                data=selector.xpath('//*[@id="pf1"]/div[1]/div[3]/text()')[0]
-#                print (data)
-                
-                if ((selector.xpath('//*[@id="pf1"]/div[1]/div[3]/text()')[0])=='证券代码：'):
-                    offset=20
-#                    year =selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[1]/text()')[0]
-#                    month = selector.xpath('//*[@id="pf1"]/div[1]/div[14]/div[2]/text()')[0]
-                else:
-                    offset=18
-#                    year =selector.xpath('//*[@id="pf1"]/div[1]/div[12]/div[1]/text()')[0]
-#                    month = selector.xpath('//*[@id="pf1"]/div[1]/div[12]/div[2]/text()')[0]
-#                    
+            HtmlFolder = os.path.join(self.DownloadAdr,'HTML')
+            HtmlPath=os.path.join(HtmlFolder,Htmlname)
             
-                lls.append(year)
-                lls.append(month)
+            YMD=Htmlname.split('_')[-2]
+        
+            month=YMD[4:6]
+            if (month[0]=='0'):
+                month=month[1:]
+            
+            year=YMD[0:4]
+            dateHtml=datetime.date(int(year),int(month),1)
+            date=dateHtml+datetime.timedelta(days = -1)
+            htmlf=open(HtmlPath,'r',encoding="utf-8")
+            html=htmlf.read()
+            selector=etree.HTML(html)
+            #element='//*[@id="pf1"]/div[1]/div[21]/div'
+            lls=[self.stock_code,self.StockName]
+
+#            if ((selector.xpath('//*[@id="pf1"]/div[1]/div[3]/text()')[0])=='证券代码：'):
+#                offset=20
+#
+#            else:
+#                offset=18
+          
+            try:
                 path1='//*[@id="pf1"]/div[1]/div['
-                path2=']/div/text()'
+                path2=']/div/text()' 
+                for i in range(0,100):
+                    LocPath=path1+str(i)+path2
+                    LocElement=selector.xpath(LocPath)
+                   
+                    if (LocElement!=[] and LocElement[0]=='生产量' ):
+                        offset=i
+                        break
+                print (offset)
+             
+                year =str(date.year)
+                month = str(date.month)
+                lls.append(str(date.year))
+                lls.append(str(date.month))
                 for i in range(0,8):
                     for j in range(1,7):
                         num=str(j+i*7+offset)
@@ -217,9 +221,11 @@ class ProductionSaleToSql:
                 cursor.close()
                 db.close()
                 print(self.StockName+year+'年'+month+'月入库成功')
+            except:
+                 print(self.StockName+year+'年'+month+'月入库失败')
             finally:
-                #print ('1')
                 htmlf.close()
+            
 
       
     def ProSaleUpdate(self):
@@ -244,7 +250,7 @@ if __name__ == "__main__":
     stock_code = "600066"
     StockName = "宇通客车"
     DownloadAdr = "d:\\downloadTest"
-    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2016,MonthBegin = 3)
+    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2015,MonthBegin = 9)
    # Update.ParametersSet(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,ExeAdr=ExeAdr,YearBegin = 2017,MonthBegin = 6)
     Update.ProSaleUpdate()
     
@@ -258,4 +264,5 @@ self.DownloadAdr = DownloadAdr        #下载路径
 self.ExeAdr = ExeAdr                  #可执行文件路径
 self.YearBegin = YearBegin            #起始日期
 self.MonthBegin = MonthBegin          #结束日期
+日期要大于2015年8月（因为这之前的格式会发生变化）
 """
