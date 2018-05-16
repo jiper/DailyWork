@@ -157,6 +157,27 @@ class ProductionSaleToSql:
         db.close()
         return flag
     
+    
+    
+    def QueryPSData(self,years,months,fieldName):
+       
+        sql = "SELECT "+fieldName+" FROM `ProductionSale` WHERE `stock_code`="+self.stock_code+" AND `year`="+years+" AND `month`="+months
+                 
+        db = pymysql.connect(user=self.user,password=self.password,database=self.database,charset="utf8")
+        cursor = db.cursor()
+        cursor.execute(sql)
+        rs=cursor.fetchall()
+        if rs:
+            data=int(rs[0][0].replace(',',''))
+        else:
+            data=-1
+            print ("error! There is no record in the database!")
+        cursor.close()
+        db.close()
+        return data
+
+    
+    
  
     def CMDRun(self,cmd):
         #print('start executing cmd...')
@@ -281,8 +302,10 @@ if __name__ == "__main__":
     StockName = "宇通客车"
     DownloadAdr = "d:\\downloadTest"
     Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2015,MonthBegin = 9)
-   # Update.ParametersSet(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,ExeAdr=ExeAdr,YearBegin = 2017,MonthBegin = 6)
+   # Update.ParametersSet(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,ExeAdr=ExeAdr,YearBegin = 2015,MonthBegin = 9)
     Update.ProSaleUpdate()
+#    data=Update.QueryPSData("2017","1","production")
+#    print (data)
     
 """
 self.user = user                      #用户名 
