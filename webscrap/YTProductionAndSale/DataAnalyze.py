@@ -4,7 +4,7 @@ Created on Tue Apr 24 13:45:01 2018
 
 @author: JianLPeng
 """
-
+#mpl.rcParams['font.sans-serif'] = ['SimHei']  
 user = "root"
 password = "jip6669635"
 database = "db_test1"
