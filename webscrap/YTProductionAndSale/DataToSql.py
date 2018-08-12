@@ -17,15 +17,22 @@
 # 版本缺点
 # 1、依赖在线pdf转excel网站，转换出来的excel可能发生格式错位
 # 2、模拟网页操作，速度相对较慢
+#-------------------------------------------------------------------------------------------
+# 作者：翦林鹏
+# 更新日期：2018-5-15
+# 版本号：V0.2
+# 描述：优化pdf数据获取
+#环境搭建：
+#1、下载pdf2htmlex
+#   下载地址：http://soft.rubypdf.com/software/pdf2htmlex-windows-version，下载后缀为win32-static的版本
+#2、解压pdf2htmlex
+# 使用说明：
+# 1. 将pdf2htmlex解压地址赋值给ExeAdr
+# 2. 确保DownloadAdr下没有任何重要的文件，因为程序会将DownloadAdr文件夹下面的所有文件清空
+# 3. 起始年月默认为2017.6，根据需要修改
+# 4. 输入连接数据库的用户名、密码等，点击运行即可
+
 #--------------------------------------------------------------------
-#作者：
-#
-#
-#
-#
-#
-#
-#
 
 
 # -*- coding: utf-8 -*-
@@ -293,15 +300,17 @@ class ProductionSaleToSql:
 #            self.TxtToSql(txtAdd)
 #            print (Txt+'入库成功')
             
-     
+#---------------------------------------------------------------------------
+# 用户代码示例       
 if __name__ == "__main__":
     user = "root"
     password = "jip6669635"
     database = "db_test1"
     stock_code = "600066"
     StockName = "宇通客车"
+    ExeAdr=r"E:\JianLPeng\Software\pdfToHtml\pdf2htmlEX.exe"
     DownloadAdr = "d:\\downloadTest"
-    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2015,MonthBegin = 9)
+    Update = ProductionSaleToSql(user=user,password=password,database=database,stock_code=stock_code,ExeAdr=ExeAdr,StockName=StockName,DownloadAdr=DownloadAdr,YearBegin = 2016,MonthBegin = 9)
    # Update.ParametersSet(user=user,password=password,database=database,stock_code=stock_code,StockName=StockName,DownloadAdr=DownloadAdr,ExeAdr=ExeAdr,YearBegin = 2015,MonthBegin = 9)
     Update.ProSaleUpdate()
 #    data=Update.QueryPSData("2017","1","production")
