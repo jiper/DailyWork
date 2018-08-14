@@ -1,16 +1,19 @@
+# 作者：尹超
+# 更新日期：2018-5-13
+# 版本号：V0.3
+# 描述：本程序用于宇通客车产销快报数据的分析
+# 内容：系统初始化、数据读入、数据处理、绘图、统计分析
+# 备注：
+# 1. 务必保持工程下有连续的xlsx文件，并确保文件名有效
+# 2. 确保year/lastmonth和文件一致，否则会出现错误
+# 3. 暂时只能靠手工将pdf文件转成xlsx文件，以后可以考虑做成全自动的
 
-"""
-Created on Tue Apr 24 13:45:01 2018
+# 修改记录：2018-1-6.修复了产销比计算错误的bug
+#修改记录：2018-5-13.更改数据来源，由离线数据变为数据库
+from pylab import *  
+mpl.rcParams['font.sans-serif'] = ['SimHei']  
 
-@author: JianLPeng
-"""
-#mpl.rcParams['font.sans-serif'] = ['SimHei']  
-user = "root"
-password = "jip6669635"
-database = "db_test1"
-stock_code = "600066"
-StockName = "宇通客车"
-DownloadAdr = "d:\\downloadTest"
+
 import DataToSql
 import pandas as pd
 from pandas import Series, DataFrame
@@ -167,8 +170,16 @@ class DataAnalyze:
         Rate = (s/s_sum).round(2)
         print(Rate)
         
+#---------------------------------------------------------------------------
+# 用户代码示例    
+# 使用前确保数据库中有相应数据
 
 if __name__ == "__main__":
+    user = "root"
+    password = "jip6669635"
+    database = "db_test1"
+    stock_code = "600066"
+    StockName = "宇通客车"
     DA=DataAnalyze(2017,12)
     DA.run()
        
